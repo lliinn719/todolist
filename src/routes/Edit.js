@@ -1,26 +1,21 @@
-import { Component, useCallback } from "react";
+import { Component } from "react";
 import { Link } from "react-router-dom";
 import "./App";
 
 export default class Edit extends Component {
   state = {
     todoList: [],
+    editValue: [],
   };
   componentDidMount = () => {
-    const { id } = this.props.match.params;
     const data = localStorage.getItem("todoList")
       ? JSON.parse(localStorage.getItem("todoList"))
       : [];
     console.log("data", data);
     if (data.length > 0) {
-      this.setState(
-        {
-          todoList: data,
-        },
-        () => {
-          console.log(this.state);
-        }
-      );
+      this.setState({
+        todoList: data,
+      });
     }
   };
 
@@ -28,11 +23,14 @@ export default class Edit extends Component {
     const updateArray = localStorage.getItem("todoList")
       ? JSON.parse(localStorage.getItem("todoList"))
       : [];
-    const { id } = this.props.match.params;
     const { todoList } = this.state;
-    updateArray[id] = todoList;
+    const { id } = this.props.match.params;
+    todoList[id] === updateArray[id]
+      ? (updateArray[id] = todoList[id])
+      : (updateArray[id] = todoList);
     localStorage.setItem("todoList", JSON.stringify(updateArray));
   };
+
   render() {
     const { id } = this.props.match.params;
     const { todoList } = this.state;
@@ -46,6 +44,9 @@ export default class Edit extends Component {
         ></input>
         <button onClick={this.handleEditTodo}>
           <Link to="/todo">編輯完成</Link>
+        </button>
+        <button>
+          <Link to="/todo">取消</Link>
         </button>
       </div>
     );

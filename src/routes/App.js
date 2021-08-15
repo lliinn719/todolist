@@ -12,25 +12,19 @@ export default class App extends Component {
       : [];
     console.log(data);
     if (data.length > 0) {
-      this.setState(
-        {
-          todoList: data,
-        },
-        () => {
-          console.log(this.state, localStorage);
-        }
-      );
+      this.setState({
+        todoList: data,
+      });
     }
   };
-  componentDidUpdate = () => {};
 
   handleonDelete = (index) => {
     const deleteArray = localStorage.getItem("todoList")
       ? JSON.parse(localStorage.getItem("todoList"))
       : [];
     deleteArray.splice(index, 1);
-    console.log("pp", index, deleteArray);
     localStorage.setItem("todoList", JSON.stringify(deleteArray));
+    this.setState({ todoList: deleteArray });
   };
 
   render() {
